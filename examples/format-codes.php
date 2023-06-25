@@ -20,7 +20,6 @@ error_reporting(E_ALL);
 
 Output::clear();
 
-foreach(EnumFormatCodes::cases() as $formatCode)
-{
+foreach(EnumFormatCodes::cases() as $formatCode) {
     Output::writeln('<' . strtolower($formatCode->name). '>Hello World [EnumFormatCodes::' . $formatCode->name . ']</>');
 }

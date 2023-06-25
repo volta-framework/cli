@@ -128,7 +128,7 @@ class Output
         static::writeLn(
             $color->value .
             EnumBoxChars::CORNER_UPPER_LEFT->toChar() .
-            str_repeat(EnumBoxChars::LINE_HOR_DOTTED->toChar() , $width - 2) .
+            str_repeat(EnumBoxChars::LINE_HOR->toChar() , $width - 2) .
             EnumBoxChars::CORNER_UPPER_RIGHT->toChar(). EnumFormatCodes::CLEAR->value
         );
     }
@@ -146,9 +146,9 @@ class Output
         $stripped = strip_tags($innerText);
         $pad = $width - 3 - strlen($stripped);
 
-        static::write($color->value . EnumBoxChars::LINE_VERT_DOTTED->toChar(). EnumFormatCodes::CLEAR->value);
+        static::write($color->value . EnumBoxChars::LINE_VERT->toChar(). EnumFormatCodes::CLEAR->value);
         static::write(' ' . static::format($innerText) . str_repeat(' ', $pad));
-        static::write($color->value . EnumBoxChars::LINE_VERT_DOTTED->toChar(). EnumFormatCodes::CLEAR->value);
+        static::write($color->value . EnumBoxChars::LINE_VERT->toChar(). EnumFormatCodes::CLEAR->value);
         static::write("\n");
     }
 
@@ -163,7 +163,7 @@ class Output
     {
         static::write(
             $color->value .EnumBoxChars::CORNER_BOTTOM_LEFT->toChar() .
-            str_repeat(EnumBoxChars::LINE_HOR_DOTTED->toChar() , $width - 2) .
+            str_repeat(EnumBoxChars::LINE_HOR->toChar() , $width - 2) .
             EnumBoxChars::CORNER_BOTTOM_RIGHT->toChar() . EnumFormatCodes::CLEAR->value . "\n"
         );
     }
@@ -388,7 +388,7 @@ class Output
      * Prints a table
      *
      * @param string[] $headers
-     * @param array<int<array<int, string>>> $data
+     * @param array<array<>> $data
      * @return void
      */
     public static function table(array $headers, array $data): void
