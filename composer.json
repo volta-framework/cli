@@ -1,9 +1,9 @@
 {
-    "name" : "volta-framework/cli",
+    "name" : "volta-framework/component-cli",
     "type": "library",
     "description": "Provide helpers for a simple CLI script",
     "keywords": ["Framework, PHP Components"],
-    "homepage": "https://github.com/volta-framework/cli",
+    "homepage": "https://github.com/volta-framework/component-cli",
     "license": "MIT",
     "version": "1.0.0",
     "authors": [
