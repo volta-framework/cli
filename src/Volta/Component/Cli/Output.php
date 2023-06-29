@@ -233,15 +233,8 @@ class Output
      */
     public static function list(array $list): void
     {
-        if (static::$keyWidth < 1 ) {
-            foreach (array_keys($list) as $key) {
-                if (strlen($key) > static::$keyWidth) {
-                    $keyWidth = strlen($key);
-                }
-            }
-        }
         foreach($list as $key => $val) {
-            static::keyValue($key, $val);
+            static::keyValue((string) $key, $val);
         }
     }
 
@@ -465,6 +458,44 @@ class Output
         $bottomBody .="\n";
         fwrite(STDOUT,  $bottomBody );
     }
+
+
+    /**
+     * @param string $intro
+     * @param string $ending
+     * @return void
+     */
+    public static function help(string $intro ='', string $ending=''):void
+    {
+        $trace = debug_backtrace();
+        Output::writeLn('Use: ~$: php ' . basename($trace[0]['file'] .  ' [OPTIONS]'));
+        if(!empty($intro)) Output::writeLn($intro);
+        foreach(Options::getOptions() as $option){
+            if (!empty($option->shortName)) {
+                Output::write(' <yellow>-' . $option->shortName . '</yellow>');
+            } else {
+                Output::write(str_repeat(' ', 3));
+            }
+            if (!empty($option->longName)) {
+                Output::write((empty($option->shortName) ? '  ': ', ')) ;
+                Output::write('<yellow>--' . str_pad($option->longName, 20) . '</yellow>');
+            } else {
+                Output::write(str_repeat(' ',24));
+            }
+            Output::write('<yellow>' . match($option->type) {
+                    EnumOptionType::NO_VALUE       => '         ',
+                    EnumOptionType::OPTIONAL_VALUE => '[=VALUE] ',
+                    EnumOptionType::REQUIRE_VALUE  => ' =VALUE  '
+                } .  '</yellow>');
+            Output::writeLn('<italic>' . $option->description . '</italic>');
+        }
+        if(!empty($ending))  Output::writeLn($ending);
+    }
+
+
+
+
+
 
     // public static function cursorSave(): void
     // {

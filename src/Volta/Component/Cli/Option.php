@@ -1,24 +1,55 @@
 <?php
-/**
- * This file is part of the Quadro library which is released under WTFPL.
- * See file LICENSE.txt or go to http://www.wtfpl.net/about/ for full license details.
+/*
+ * This file is part of the Volta package.
  *
- * There for we do not take any responsibility when used outside the Jaribio
- * environment(s).
+ * (c) Rob Demmenie <rob@volta-framework.com>
  *
- * If you have questions please do not hesitate to ask.
- *
- * Regards,
- *
- * Rob <rob@jaribio.nl>
- *
- * @license LICENSE.txt
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 declare(strict_types=1);
 
 namespace Volta\Component\Cli;
 
+
 class Option
 {
+
+    /**
+     * @param string $shortName
+     * @param string $longName
+     * @param EnumOptionType $type
+     * @param string $description
+     * @throws Exception
+     */
+    public function __construct(
+        public readonly string $shortName,
+        public readonly string $longName,
+        public readonly EnumOptionType $type,
+        public readonly string $description
+    ){
+        if ($shortName !== '') {
+            if (!preg_match('/^[a-zA-Z]{1}$/', $shortName, $matches)) {
+                throw new Exception(sprintf('Short option must be exactly one character(a-z, A-Z) long, %d given.', strlen($shortName)));
+            }
+        }
+        if ($longName !== '') {
+            if (!preg_match('/^[a-zA-Z]{2,16}$/', $this->longName, $matches)) {
+                throw new Exception(sprintf('Long option must be exactly between 2 and 16 character(a-z, A-Z) long, %d given.', strlen($this->longName)));
+            }
+        }
+        if ($shortName === '' && $longName === '') {
+            throw new Exception('Both short name and long name are empty');
+        }
+    }
+
+
+    /**
+     * @return string Returns the index for the getopt() results array
+     */
+    public function getIndex(): string
+    {
+       return  (empty($this->shortName)) ? $this->longName: $this->shortName;
+    }
 
 }
