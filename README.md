@@ -16,3 +16,8 @@ To run the examples open a terminal and make the examples directory your current
 ```cmd
 $: php format.php
 ```
+
+```cmd
+$: php format.php --help
+```
+
