@@ -28,6 +28,8 @@ class Output
 
     #region - Formatting text
 
+
+
     /**
      * List with all possible tags
      * @return array<string, string>
@@ -182,6 +184,44 @@ class Output
     {
         fwrite(STDERR, Output::format(
             "\n\n\t<red><b>$text</red><b></red>\n\n"));
+    }
+
+    /**
+     * @param int $code
+     * @param string $message
+     * @param string $file
+     * @param int $line
+     * @param array $context
+     * @return bool
+     */
+    public static function errorHandler(int $code, string $message, string $file = '', int $line = 0, array $context = []): bool
+    {
+        Output::writeLn();
+        Output::line(120);
+        Output::writeLn('<bold>' . str_pad(' code', 8) . '</bold> : ' . $code);
+        Output::writeLn('<bold>' . str_pad(' message', 8) . '</bold> : ' . $message);
+        Output::writeLn('<bold>' . str_pad(' file', 8) . '</bold> : ' . $file);
+        Output::writeLn('<bold>' . str_pad(' line', 8) . '</bold> : ' . $line);
+        Output::line(120);
+        Output::writeLn();
+        return true;
+    }
+
+    /**
+     * @param \Throwable $exception
+     * @return bool
+     */
+    public static function exceptionHandler(\Throwable $exception): bool
+    {
+        Output::writeLn();
+        Output::line(120);
+        Output::writeLn('<bold>' . str_pad(' code', 8) . '</bold> : ' . $exception->getCode());
+        Output::writeLn('<bold>' . str_pad(' message', 8) . '</bold> : ' . $exception->getMessage());
+        Output::writeLn('<bold>' . str_pad(' file', 8) . '</bold> : ' . $exception->getFile());
+        Output::writeLn('<bold>' . str_pad(' line', 8) . '</bold> : ' . $exception->getLine());
+        Output::line(120);
+        Output::writeLn();
+        return true;
     }
 
     #endregion
@@ -468,7 +508,9 @@ class Output
     public static function help(string $intro ='', string $ending=''):void
     {
         $trace = debug_backtrace();
-        Output::writeLn('Use: ~$: php ' . basename($trace[0]['file'] .  ' [OPTIONS]'));
+
+        Output::writeLn();
+        Output::writeLn('Use: ~$: php ' . basename($trace[count($trace) -1]['file'] .  ' [OPTIONS]'));
         if(!empty($intro)) Output::writeLn($intro);
         foreach(Options::getOptions() as $option){
             if (!empty($option->shortName)) {

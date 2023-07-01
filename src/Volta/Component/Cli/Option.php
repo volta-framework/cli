@@ -43,13 +43,4 @@ class Option
         }
     }
 
-
-    /**
-     * @return string Returns the index for the getopt() results array
-     */
-    public function getIndex(): string
-    {
-       return  (empty($this->shortName)) ? $this->longName: $this->shortName;
-    }
-
 }

@@ -63,6 +63,12 @@ abstract class Options
         return Options::$_options;
     }
 
+    public static function getResult(): array
+    {
+        if (Options::$_result === null) options::parse();
+        return Options::$_result;
+    }
+
     /**
      * @param string $name
      * @return bool TRUE when we have an option with this short- or long-name
@@ -84,11 +90,13 @@ abstract class Options
      */
     public static function get(string $name): string|bool
     {
-        if (Options::$_result === null) Options::read();
+        if (Options::$_result === null) Options::parse();
         foreach(Options::$_options as $option) {
             if ($option->shortName === $name || $option->longName === $name) {
-                $index = $option->getIndex();
-                if (!isset(Options::$_result[$index])) return false;
+                $index = null;
+                if (isset(Options::$_result[$option->shortName])) $index = $option->shortName;
+                if (isset(Options::$_result[$option->longName])) $index = $option->longName;
+                if ($index === null) return false;
                 if (false === Options::$_result[$index]) return true;
                 return Options::$_result[$index];
             }
@@ -103,7 +111,7 @@ abstract class Options
      * @return array|false
      * @throws Exception
      */
-    public static function read(): array|false
+    public static function parse(): array|false
     {
         $shortOptions = '';
         foreach(Options::$_options as $option){

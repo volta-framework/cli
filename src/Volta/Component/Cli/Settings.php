@@ -1,18 +1,11 @@
 <?php
-/**
- * This file is part of the Quadro library which is released under WTFPL.
- * See file LICENSE.txt or go to http://www.wtfpl.net/about/ for full license details.
+/*
+ * This file is part of the Volta package.
  *
- * There for we do not take any responsibility when used outside the Jaribio
- * environment(s).
+ * (c) Rob Demmenie <rob@volta-framework.com>
  *
- * If you have questions please do not hesitate to ask.
- *
- * Regards,
- *
- * Rob <rob@jaribio.nl>
- *
- * @license LICENSE.txt
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 declare(strict_types=1);
 
@@ -20,5 +13,29 @@ namespace Volta\Component\Cli;
 
 class Settings
 {
+
+    /**
+     * Adds a help option and sets error and exception handler
+     *
+     * @return void
+     * @throws Exception
+     */
+    public static function setDefaults(): void
+    {
+        ini_set('display_errors', '1');
+        ini_set('display_startup_errors', '1');
+        error_reporting(E_ALL);
+
+        set_error_handler('Volta\Component\Cli\Output::errorHandler');
+        set_exception_handler('Volta\Component\Cli\Output::exceptionHandler');
+
+        Options::add(new Option('h', 'help', EnumOptionType::NO_VALUE,  'Outputs this help'));
+
+        if (Options::get('help') === true) {
+            Output::help();
+            exit();
+        }
+    }
+
 
 }
