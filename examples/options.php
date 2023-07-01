@@ -16,8 +16,7 @@ use Volta\Component\Cli\Options;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-
-Output::setDefaults();
+Settings::setDefaults();
 
 Options::add(new Option('a', 'aaaaa', EnumOptionType::OPTIONAL_VALUE, 'The option -a may have a value'));
 Options::add(new Option('b', '',EnumOptionType::REQUIRE_VALUE, 'The option -b must have a value'));
