@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace Volta\Component\Cli;
 
+/**
+ * Represents an option on the command line
+ */
 abstract class Options
 {
 

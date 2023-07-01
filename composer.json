@@ -2,10 +2,10 @@
     "name" : "volta-framework/component-cli",
     "type": "library",
     "description": "Provide helpers for a simple CLI script",
-    "keywords": ["Framework, PHP Components"],
+    "keywords": ["cli", "php"],
     "homepage": "https://github.com/volta-framework/component-cli",
     "license": "MIT",
-    "version": "1.0.0",
+
     "authors": [
         {
             "name":"Rob Demmenie",
