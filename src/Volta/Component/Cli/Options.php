@@ -85,10 +85,11 @@ abstract class Options
 
     /**
      * @param string $name
+     * @param string|null $default
      * @return string|bool The value (string) or TRUE when there is no value but is passed, FALSE when not passed
      * @throws Exception
      */
-    public static function get(string $name): string|bool
+    public static function get(string $name, string|null $default = null): string|bool
     {
         if (Options::$_result === null) Options::parse();
         foreach(Options::$_options as $option) {
@@ -96,8 +97,20 @@ abstract class Options
                 $index = null;
                 if (isset(Options::$_result[$option->shortName])) $index = $option->shortName;
                 if (isset(Options::$_result[$option->longName])) $index = $option->longName;
-                if ($index === null) return false;
+                if ($index === null) {
+
+                    // not provided but a value can/must be given and a default value is provided return the default
+                    if ($option->type === EnumOptionType::REQUIRE_VALUE && is_string($default)) return $default;
+                    if ($option->type === EnumOptionType::OPTIONAL_VALUE && is_string($default)) return $default;
+
+                    // in all cases return false(option not provided)
+                    return false;
+                }
+
+                // present but no value given
                 if (false === Options::$_result[$index]) return true;
+
+                // present and a value is given, return the value
                 return Options::$_result[$index];
             }
         }
