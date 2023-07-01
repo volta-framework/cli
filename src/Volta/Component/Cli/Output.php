@@ -147,6 +147,7 @@ class Output
     {
         $stripped = strip_tags($innerText);
         $pad = $width - 3 - strlen($stripped);
+        if ($pad < 1) $pad = 0;
 
         static::write($color->value . EnumBoxChars::LINE_VERT->toChar(). EnumFormatCodes::CLEAR->value);
         static::write(' ' . static::format($innerText) . str_repeat(' ', $pad));
