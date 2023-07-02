@@ -17,10 +17,11 @@ class Settings
     /**
      * Adds a help option and sets error and exception handler
      *
+     * @param Option[] $options
      * @return void
      * @throws Exception
      */
-    public static function setDefaults(): void
+    public static function initialize(array $options = []): void
     {
         ini_set('display_errors', '1');
         ini_set('display_startup_errors', '1');
@@ -30,6 +31,10 @@ class Settings
         set_exception_handler('Volta\Component\Cli\Output::exceptionHandler');
 
         Options::add(new Option('h', 'help', EnumOptionType::NO_VALUE,  'Outputs this help'));
+
+        foreach($options as $option) {
+            Options::add($option);
+        }
 
         if (Options::get('help') === true) {
             Output::help();
